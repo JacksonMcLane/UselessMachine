@@ -29,11 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         wireWidgets();
         setListeners();
-        updateAndRandomize();
-    }
-
-    private void updateAndRandomize() {
-
     }
 
     private void setListeners() {
@@ -41,37 +36,47 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new CountDownTimer(10000, 10) {
+                    int counter = 0;
+                    int multiplier = 0;
+                    boolean colored = false;
                     @Override
                     public void onFinish() {
+                        //selfDestruct.setText("Self Destruct");
                         finish();
                     }
 
                     @Override
                     public void onTick(long l) {
                         selfDestruct.setText(String.valueOf(l / 1000));
-                        int subtract = 0;
+                        int subtract = 1;
+                        counter++;
                         if (l / 1000 % 10 == 0) {
-                            subtract = 10 * (((int) (10000 - l)) / 1000);
+                            multiplier++;
+                            subtract = 100 * multiplier;
                         }
-                        new CountDownTimer(300 - subtract, 300 - subtract) {
-                            @Override
-                            public void onFinish() {
-                                int red = 255;
-                                int blue = 255;
-                                int green = 255;
-                                int original = Color.rgb(red, blue, green);
-                                constraintLayout.setBackgroundColor(original);
-                            }
+                        if(!colored && counter % 2 == 0) {
+                            new CountDownTimer(300 - subtract, 300 - subtract) {
+                                @Override
+                                public void onFinish() {
+                                    int red = 255;
+                                    int blue = 255;
+                                    int green = 255;
+                                    int original = Color.rgb(red, blue, green);
+                                    constraintLayout.setBackgroundColor(original);
+                                    colored = false;
+                                }
 
-                            @Override
-                            public void onTick(long l) {
-                                int r = 178;
-                                int g = 34;
-                                int b = 34;
-                                int red = Color.rgb(r, g, b);
-                                constraintLayout.setBackgroundColor(red);
-                            }
-                        }.start();
+                                @Override
+                                public void onTick(long l) {
+                                    colored = true;
+                                    int r = 178;
+                                    int g = 34;
+                                    int b = 34;
+                                    int red = Color.rgb(r, g, b);
+                                    constraintLayout.setBackgroundColor(red);
+                                }
+                            }.start();
+                        }
                     }
                 }.start();
             }
@@ -80,7 +85,29 @@ public class MainActivity extends AppCompatActivity {
         lookBusy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.getVisibility();
+                progressBar.setVisibility(View.VISIBLE);
+                useless.setVisibility(View.GONE);
+                selfDestruct.setVisibility(View.GONE);
+                lookBusy.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+                new CountDownTimer(5000, 40) {
+
+                    @Override
+                    public void onFinish() {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        useless.setVisibility(View.VISIBLE);
+                        selfDestruct.setVisibility(View.VISIBLE);
+                        lookBusy.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.INVISIBLE);
+                        progressBar.setProgress(0);
+                    }
+
+                    @Override
+                    public void onTick(long l) {
+                        progressBar.incrementProgressBy(1);
+                        progress.setText("Message - " + String.valueOf(progressBar.getProgress()) + "%");
+                    }
+                }.start();
             }
         });
 
