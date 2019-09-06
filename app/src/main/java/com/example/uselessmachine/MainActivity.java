@@ -35,9 +35,10 @@ public class MainActivity extends AppCompatActivity {
         selfDestruct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new CountDownTimer(10000, 10) {
+                new CountDownTimer(10000, 300) {
                     int counter = 0;
                     int multiplier = 0;
+                    int subtract = 1;
                     boolean colored = false;
                     @Override
                     public void onFinish() {
@@ -48,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTick(long l) {
                         selfDestruct.setText(String.valueOf(l / 1000));
-                        int subtract = 1;
+
                         counter++;
                         if (l / 1000 % 10 == 0) {
                             multiplier++;
-                            subtract = 100 * multiplier;
+                            subtract = 30 * multiplier;
                         }
                         if(!colored && counter % 2 == 0) {
                             new CountDownTimer(300 - subtract, 300 - subtract) {
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, final boolean isChecked) {
                 if (isChecked) {
-                    int time = (int) (Math.random() * 3000);
+                    int time = (int) (Math.random() * 2000);
                     new CountDownTimer(time, 10) {
                         public void onFinish() {
                             useless.setChecked(false);
