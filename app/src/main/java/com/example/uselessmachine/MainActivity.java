@@ -49,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTick(long l) {
                         selfDestruct.setText(String.valueOf(l / 1000));
-
                         counter++;
-                        if (l / 1000 % 10 == 0) {
+                        if (l % 1000 == 0 || l % 1000 == 5) {
                             multiplier++;
                             subtract = 30 * multiplier;
                         }
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTick(long l) {
                         progressBar.incrementProgressBy(1);
-                        progress.setText("Message - " + String.valueOf(progressBar.getProgress()) + "%");
+                        progress.setText("Loading - " + String.valueOf(progressBar.getProgress()) + "%");
                     }
                 }.start();
             }
