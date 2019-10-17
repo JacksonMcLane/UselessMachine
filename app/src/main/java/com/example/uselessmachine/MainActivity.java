@@ -12,16 +12,15 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Switch useless;
-    private Button selfDestruct;
-    private Button lookBusy;
+    private Switch switchUseless;
+    private Button buttonSelfDestruct;
+    private Button buttonLookBusy;
     private ProgressBar progressBar;
     private ConstraintLayout constraintLayout;
-    private TextView progress;
+    private TextView textViewProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        selfDestruct.setOnClickListener(new View.OnClickListener() {
+        buttonSelfDestruct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new CountDownTimer(10000, 300) {
@@ -42,13 +41,12 @@ public class MainActivity extends AppCompatActivity {
                     boolean colored = false;
                     @Override
                     public void onFinish() {
-                        //selfDestruct.setText("Self Destruct");
                         finish();
                     }
 
                     @Override
                     public void onTick(long l) {
-                        selfDestruct.setText(String.valueOf(l / 1000));
+                        buttonSelfDestruct.setText(String.valueOf(l / 1000));
                         counter++;
                         if (l % 1000 == 0 || l % 1000 == 5) {
                             multiplier++;
@@ -82,58 +80,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        lookBusy.setOnClickListener(new View.OnClickListener() {
+        buttonLookBusy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                useless.setVisibility(View.GONE);
-                selfDestruct.setVisibility(View.GONE);
-                lookBusy.setVisibility(View.GONE);
-                progress.setVisibility(View.VISIBLE);
+                switchUseless.setVisibility(View.GONE);
+                buttonSelfDestruct.setVisibility(View.GONE);
+                buttonLookBusy.setVisibility(View.GONE);
+                textViewProgress.setVisibility(View.VISIBLE);
                 new CountDownTimer(5000, 40) {
 
                     @Override
                     public void onFinish() {
                         progressBar.setVisibility(View.INVISIBLE);
-                        useless.setVisibility(View.VISIBLE);
-                        selfDestruct.setVisibility(View.VISIBLE);
-                        lookBusy.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.INVISIBLE);
+                        switchUseless.setVisibility(View.VISIBLE);
+                        buttonSelfDestruct.setVisibility(View.VISIBLE);
+                        buttonLookBusy.setVisibility(View.VISIBLE);
+                        textViewProgress.setVisibility(View.INVISIBLE);
                         progressBar.setProgress(0);
                     }
 
                     @Override
                     public void onTick(long l) {
                         progressBar.incrementProgressBy(1);
-                        progress.setText("Loading - " + String.valueOf(progressBar.getProgress()) + "%");
+                        textViewProgress.setText("Loading - " + String.valueOf(progressBar.getProgress()) + "%");
                     }
                 }.start();
             }
         });
 
-        useless.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switchUseless.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, final boolean isChecked) {
                 if (isChecked) {
                     int time = (int) (Math.random() * 2000);
                     new CountDownTimer(time, 10) {
                         public void onFinish() {
-                            useless.setChecked(false);
+                            switchUseless.setChecked(false);
                         }
 
                         @Override
                         public void onTick(long l) {
-                            if (!useless.isChecked()) {
+                            if (!switchUseless.isChecked()) {
                                 cancel(); //cancels timer if user switches the switch off
                             }
                         }
                     }.start();
                 }
-//                if(isChecked) {
-//                    Toast.makeText(MainActivity.this, "ON", Toast.LENGTH_SHORT).show();
-//                }
-//                else
-//                    Toast.makeText(MainActivity.this, "OFF", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -142,12 +135,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void wireWidgets() {
-        useless = findViewById(R.id.switch_main_useless);
-        selfDestruct = findViewById(R.id.button_main_self_destruct);
-        lookBusy = findViewById(R.id.button_main_look_busy);
+        switchUseless = findViewById(R.id.switch_main_useless);
+        buttonSelfDestruct = findViewById(R.id.button_main_self_destruct);
+        buttonLookBusy = findViewById(R.id.button_main_look_busy);
         progressBar = findViewById(R.id.progressBar_main_progress);
         constraintLayout = findViewById(R.id.constraintlayout_main);
-        progress = findViewById(R.id.textView_main_progress);
+        textViewProgress = findViewById(R.id.textView_main_progress);
     }
 
 
